@@ -25,14 +25,16 @@ jobs:
       - name: Run JUnit tests
         run: ./mvnw test
 
-      - name: Run SonarQube static code analysis
+      - name: Run SonarCloud static code analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./mvnw verify sonar:sonar \
-            -Dsonar.projectKey=your_project_key \
+            -Dsonar.projectKey=wangke-ai-finance-backend \
+            -Dsonar.organization=wangke \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
+
 
       - name: Build Spring Boot project with Maven
         run: ./mvnw clean package -DskipTests
