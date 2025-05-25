@@ -3,7 +3,7 @@ name: Build and Push Spring Boot Docker Image
 on:
   push:
     branches:
-      - master  # 或 master，视你项目分支而定
+      - master  
 
 jobs:
   build-and-push:
@@ -13,11 +13,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Grant execute permission for Maven wrapper
         run: chmod +x mvnw
