@@ -7,7 +7,6 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image with SonarCloud
     runs-on: ubuntu-latest
 
     steps:
@@ -20,33 +19,21 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Set up Maven
+      - name: Grant execute permission for Maven wrapper
         run: chmod +x mvnw
 
-      - name: Run tests
+      - name: Run JUnit tests
         run: ./mvnw test
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          organization: WangKe
-          projectKey: AI-Finance-System-backend
-          args: >
-            -Dsonar.projectKey=AI-Finance-System-backend
-            -Dsonar.organization=WangKe
-            -Dsonar.java.binaries=target
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan (Maven)
+        run: ./mvnw verify sonar:sonar \
+          -Dsonar.projectKey=AI-Finance-System-backend \
+          -Dsonar.organization=WangKe \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          -Dsonar.java.binaries=target
 
-
-      - name: Build Spring Boot project
+      - name: Build Spring Boot project with Maven
         run: ./mvnw clean package -DskipTests
 
       - name: Log in to DockerHub
@@ -57,5 +44,3 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/ai-finance-backend:latest
-
-
