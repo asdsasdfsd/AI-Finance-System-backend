@@ -1,4 +1,4 @@
-name: Build and Push Spring Boot Docker Image
+name: Build, Test and Push Spring Boot Docker Image
 
 on:
   push:
@@ -22,6 +22,18 @@ jobs:
       - name: Grant execute permission for Maven wrapper
         run: chmod +x mvnw
 
+      - name: Run JUnit tests
+        run: ./mvnw test
+
+      - name: Run SonarQube static code analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./mvnw verify sonar:sonar \
+            -Dsonar.projectKey=your_project_key \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+
       - name: Build Spring Boot project with Maven
         run: ./mvnw clean package -DskipTests
 
@@ -33,3 +45,4 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/ai-finance-backend:latest
+
