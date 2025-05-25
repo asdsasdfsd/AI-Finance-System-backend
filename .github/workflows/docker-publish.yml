@@ -26,12 +26,14 @@ jobs:
         run: ./mvnw test
 
       - name: SonarCloud Scan (Maven)
-        run: ./mvnw verify sonar:sonar \
-          -Dsonar.projectKey=AI-Finance-System-backend \
-          -Dsonar.organization=WangKe \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-          -Dsonar.java.binaries=target
+        run: |
+          ./mvnw verify sonar:sonar \
+            -Dsonar.projectKey=AI-Finance-System-backend \
+            -Dsonar.organization=WangKe \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.java.binaries=target
+
 
       - name: Build Spring Boot project with Maven
         run: ./mvnw clean package -DskipTests
