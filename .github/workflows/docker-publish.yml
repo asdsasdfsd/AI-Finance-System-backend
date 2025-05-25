@@ -25,14 +25,13 @@ jobs:
       - name: Run JUnit tests
         run: ./mvnw test
 
-      - name: SonarCloud Scan (Maven)
-        run: |
-          ./mvnw verify sonar:sonar \
-            -Dsonar.projectKey=AI-Finance-System-backend \
-            -Dsonar.organization=WangKe \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.java.binaries=target
+      - name: SonarCloud Scan
+        run: mvn verify sonar:sonar \
+          -Dsonar.projectKey=asdsasdfsd_AI-Finance-System-backend \
+          -Dsonar.organization=asdsasdfsd \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
 
       - name: Build Spring Boot project with Maven
