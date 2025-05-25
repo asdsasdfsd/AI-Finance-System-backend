@@ -36,12 +36,15 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-          projectBaseDir: .
+          organization: WangKe
+          projectKey: AI-Finance-System-backend
+          args: >
+            -Dsonar.projectKey=AI-Finance-System-backend
+            -Dsonar.organization=WangKe
+            -Dsonar.java.binaries=target
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
-          SONAR_PROJECT_KEY: AI-Finance-System-backend
-          SONAR_ORGANIZATION: WangKe
+
 
       - name: Build Spring Boot project
         run: ./mvnw clean package -DskipTests
